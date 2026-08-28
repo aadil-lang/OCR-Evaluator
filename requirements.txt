@@ -1,0 +1,5 @@
+Pillow==12.3.0
+jiwer==4.0.0
+pytesseract==0.3.13
+opencv-python==5.0.0.93
+numpy==2.3.5
