@@ -1,23 +1,23 @@
-﻿CRITICAL_FIELDS = {
-    "owner_name",
-    "survey_number",
-    "area",
-    "registration_number",
-}
+from src.evaluation.fields import CRITICAL_FIELDS
+from src.evaluation.metrics import exact_match
 
-HIGH_FIELDS = {
-    "father_name",
-    "village",
-    "tehsil",
-    "district",
-}
+
+__all__ = [
+    "CRITICAL_FIELDS",
+    "calculate_critical_field_accuracy",
+]
 
 
 def calculate_critical_field_accuracy(
     expected_fields: dict,
     predicted_fields: dict,
 ) -> dict:
-    """Calculate accuracy specifically for legally important fields."""
+    """Calculate accuracy specifically for legally important fields.
+
+    Critical-field comparison uses the same normalization policy
+    as the general field evaluator so that equivalent OCR
+    representations are evaluated consistently.
+    """
 
     results = {}
 
@@ -31,7 +31,7 @@ def calculate_critical_field_accuracy(
             "match": (
                 expected is not None
                 and actual is not None
-                and expected.strip() == actual.strip()
+                and exact_match(expected, actual)
             ),
         }
 

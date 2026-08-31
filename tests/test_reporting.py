@@ -91,7 +91,6 @@ def test_report_is_written_to_disk(tmp_path):
 
     assert output_path.exists()
 
-
 def test_report_is_valid_json(tmp_path):
     generator = ReportGenerator()
 
@@ -110,3 +109,29 @@ def test_report_is_valid_json(tmp_path):
 
     assert report["summary"]["total_documents"] == 3
     assert len(report["documents"]) == 3
+
+def test_report_contains_confidence_analysis():
+    generator = ReportGenerator()
+
+    results = [
+        {
+            "document": "test_document.png",
+            "cer": 0.0,
+            "wer": 0.0,
+            "field_accuracy": 1.0,
+            "status": "PASS",
+            "confidence": 92.0,
+            "failed_fields": [],
+            "fields": {},
+            "faithfulness": {},
+            "ocr_text": "test",
+        }
+    ]
+
+    report = generator.generate(
+        results,
+        "reports/test_confidence_report.json",
+    )
+
+    assert "confidence_analysis" in report
+    assert report["confidence_analysis"]["total_documents"] == 1

@@ -1,0 +1,149 @@
+{
+    "experiment": "OCR robustness evaluation",
+    "version": "1.0",
+    "source_document": "test_document.png",
+    "ground_truth": "test_document.json",
+    "baseline": "test_document.png",
+    "tests": [
+        {
+            "document": "blur_3.png",
+            "degradation": "Blur",
+            "severity": 3,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "blur_7.png",
+            "degradation": "Blur",
+            "severity": 7,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "blur_11.png",
+            "degradation": "Blur",
+            "severity": 11,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "blur_15.png",
+            "degradation": "Blur",
+            "severity": 15,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "noise_10.png",
+            "degradation": "Noise",
+            "severity": 10,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "noise_25.png",
+            "degradation": "Noise",
+            "severity": 25,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "noise_40.png",
+            "degradation": "Noise",
+            "severity": 40,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "noise_60.png",
+            "degradation": "Noise",
+            "severity": 60,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "jpeg_50.png",
+            "degradation": "JPEG",
+            "severity": 50,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "jpeg_20.png",
+            "degradation": "JPEG",
+            "severity": 20,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "jpeg_10.png",
+            "degradation": "JPEG",
+            "severity": 10,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "jpeg_5.png",
+            "degradation": "JPEG",
+            "severity": 5,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "rotation_2.png",
+            "degradation": "Rotation",
+            "severity": 2,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "rotation_5.png",
+            "degradation": "Rotation",
+            "severity": 5,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "rotation_10.png",
+            "degradation": "Rotation",
+            "severity": 10,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "rotation_15.png",
+            "degradation": "Rotation",
+            "severity": 15,
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "contrast_low.png",
+            "degradation": "Contrast",
+            "severity": "low",
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "contrast_medium.png",
+            "degradation": "Contrast",
+            "severity": "medium",
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "contrast_high.png",
+            "degradation": "Contrast",
+            "severity": "high",
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        },
+        {
+            "document": "contrast_extreme.png",
+            "degradation": "Contrast",
+            "severity": "extreme",
+            "ground_truth": "test_document.json",
+            "baseline": "test_document.png"
+        }
+    ]
+}

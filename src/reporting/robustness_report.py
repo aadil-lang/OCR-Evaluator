@@ -9,6 +9,8 @@ class RobustnessReportGenerator:
         robustness_summary: dict,
         output_path: str,
     ) -> None:
+        """Generate and write the robustness report."""
+
         output = Path(output_path)
 
         output.parent.mkdir(
@@ -21,33 +23,39 @@ class RobustnessReportGenerator:
             "",
             "## Robustness Summary",
             "",
-            "| Degradation | Tests | Passed | Failed | Pass Rate | Max Passing Level | First Failure |",
-            "|---|---:|---:|---:|---:|---:|---:|",
+            (
+                "| Degradation | Tests | PASS | REVIEW | FAIL | "
+                "Accurate | Inaccurate | Max Accurate Level | "
+                "First Accuracy Failure |"
+            ),
+            (
+                "|---|---:|---:|---:|---:|---:|---:|---:|---:|"
+            ),
         ]
 
         for degradation, data in robustness_summary.items():
-            max_passing = (
-                f"{data['max_passing_level']:g}"
-                if data["max_passing_level"] is not None
+            max_accurate = (
+                f"{data['max_accurate_level']:g}"
+                if data["max_accurate_level"] is not None
                 else "N/A"
             )
 
-            first_failure = (
-                f"{data['first_failure']:g}"
-                if data["first_failure"] is not None
+            first_accuracy_failure = (
+                f"{data['first_accuracy_failure']:g}"
+                if data["first_accuracy_failure"] is not None
                 else "N/A"
             )
-
-            pass_rate = f"{data['pass_rate']:.1%}"
 
             lines.append(
                 f"| {degradation} "
                 f"| {data['tests']} "
                 f"| {data['passed']} "
+                f"| {data['review']} "
                 f"| {data['failed']} "
-                f"| {pass_rate} "
-                f"| {max_passing} "
-                f"| {first_failure} |"
+                f"| {data['accurate']} "
+                f"| {data['inaccurate']} "
+                f"| {max_accurate} "
+                f"| {first_accuracy_failure} |"
             )
 
         lines.extend(
@@ -55,20 +63,51 @@ class RobustnessReportGenerator:
                 "",
                 "## Interpretation",
                 "",
-                "The robustness evaluation measures how OCR performance changes "
-                "under controlled image degradations.",
+                (
+                    "The robustness evaluation measures how OCR "
+                    "performance changes under controlled image "
+                    "degradations."
+                ),
                 "",
-                "- **Max Passing Level** indicates the highest tested severity "
-                "that still passed evaluation.",
-                "- **First Failure** indicates the lowest tested severity "
-                "that produced a non-PASS result.",
-                "- A higher pass rate indicates greater robustness to that "
-                "degradation type.",
+                (
+                    "- **PASS** indicates that the document passed "
+                    "the automated evaluation."
+                ),
+                (
+                    "- **REVIEW** indicates that the extracted "
+                    "information is accurate but the result requires "
+                    "human review because of confidence or risk rules."
+                ),
+                (
+                    "- **FAIL** indicates that the evaluation detected "
+                    "an actual extraction or critical-field failure."
+                ),
+                (
+                    "- **Accurate** indicates that all evaluated fields "
+                    "match the ground truth."
+                ),
+                (
+                    "- **Inaccurate** indicates that one or more "
+                    "evaluated fields do not match the ground truth."
+                ),
+                (
+                    "- **Max Accurate Level** indicates the highest "
+                    "tested severity where extraction remained accurate."
+                ),
+                (
+                    "- **First Accuracy Failure** indicates the lowest "
+                    "tested severity where extraction became inaccurate."
+                ),
                 "",
+                (
+                    "Operational status and extraction accuracy are "
+                    "reported separately because a REVIEW result can "
+                    "still contain completely accurate OCR output."
+                ),
             ]
         )
 
         output.write_text(
-            "\n".join(lines),
+            "\n".join(lines) + "\n",
             encoding="utf-8",
         )

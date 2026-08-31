@@ -1,16 +1,47 @@
 from pathlib import Path
+import json
 
 import cv2
 import numpy as np
 
 
 SOURCE = Path("data/documents/test_document.png")
-OUTPUT_DIR = Path("data/degraded/test_document")
+OUTPUT_DIR = Path("data/robustness/images")
+MANIFEST_PATH = Path("data/robustness/manifest.json")
+
+GROUND_TRUTH = "test_document.json"
+BASELINE = "test_document.png"
 
 
-def save_image(name: str, image: np.ndarray) -> None:
+def save_image(
+    name: str,
+    image: np.ndarray,
+    degradation: str,
+    severity,
+    tests: list[dict],
+) -> None:
     output_path = OUTPUT_DIR / name
-    cv2.imwrite(str(output_path), image)
+
+    success = cv2.imwrite(
+        str(output_path),
+        image,
+    )
+
+    if not success:
+        raise RuntimeError(
+            f"Could not write image: {output_path}"
+        )
+
+    tests.append(
+        {
+            "document": name,
+            "degradation": degradation,
+            "severity": severity,
+            "ground_truth": GROUND_TRUTH,
+            "baseline": BASELINE,
+        }
+    )
+
     print(f"Created: {output_path}")
 
 
@@ -98,6 +129,34 @@ def apply_contrast(
     )
 
 
+def write_manifest(tests: list[dict]) -> None:
+    manifest = {
+        "experiment": "OCR robustness evaluation",
+        "version": "1.0",
+        "source_document": BASELINE,
+        "ground_truth": GROUND_TRUTH,
+        "baseline": BASELINE,
+        "tests": tests,
+    }
+
+    MANIFEST_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    with MANIFEST_PATH.open(
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(
+            manifest,
+            file,
+            indent=4,
+        )
+
+    print(f"Manifest written: {MANIFEST_PATH}")
+
+
 def main() -> None:
     if not SOURCE.exists():
         raise FileNotFoundError(
@@ -116,7 +175,10 @@ def main() -> None:
             f"Could not read source image: {SOURCE}"
         )
 
+    # Fixed seed makes the noise experiment reproducible.
     rng = np.random.default_rng(42)
+
+    tests = []
 
     print("=" * 60)
     print("CREATING OCR DEGRADATION DATASET")
@@ -143,6 +205,9 @@ def main() -> None:
         save_image(
             f"blur_{severity}.png",
             degraded,
+            "Blur",
+            severity,
+            tests,
         )
 
     # ---------------------------------------------------------
@@ -166,6 +231,9 @@ def main() -> None:
         save_image(
             f"noise_{severity}.png",
             degraded,
+            "Noise",
+            severity,
+            tests,
         )
 
     # ---------------------------------------------------------
@@ -188,6 +256,9 @@ def main() -> None:
         save_image(
             f"jpeg_{quality}.png",
             degraded,
+            "JPEG",
+            quality,
+            tests,
         )
 
     # ---------------------------------------------------------
@@ -210,6 +281,9 @@ def main() -> None:
         save_image(
             f"rotation_{severity}.png",
             degraded,
+            "Rotation",
+            severity,
+            tests,
         )
 
     # ---------------------------------------------------------
@@ -233,13 +307,20 @@ def main() -> None:
         save_image(
             f"contrast_{severity}.png",
             degraded,
+            "Contrast",
+            severity,
+            tests,
         )
+
+    write_manifest(tests)
 
     print()
     print("=" * 60)
     print("DEGRADATION DATASET CREATED")
     print("=" * 60)
+    print(f"Images created: {len(tests)}")
     print(f"Output directory: {OUTPUT_DIR}")
+    print(f"Manifest: {MANIFEST_PATH}")
 
 
 if __name__ == "__main__":

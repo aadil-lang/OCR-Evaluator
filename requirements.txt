@@ -3,3 +3,6 @@ jiwer==4.0.0
 pytesseract==0.3.13
 opencv-python==5.0.0.93
 numpy==2.3.5
+fastapi==0.141.1
+uvicorn==0.52.4
+python-multipart==0.0.32

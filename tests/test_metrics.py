@@ -21,27 +21,27 @@ def test_character_error_is_detected():
 
 
 def test_word_error_is_detected():
-    reference = "Owner Name: Mohammed Aadil Khurshid"
-    hypothesis = "Owner Name: Mohammed Khurshid"
+    reference = "Owner Name: Daniel James Anderson"
+    hypothesis = "Owner Name: James Anderson"
 
     assert calculate_wer(reference, hypothesis) > 0.0
 
 
 def test_exact_match_normalizes_case_and_whitespace():
     assert exact_match(
-        "Mohammed Aadil Khurshid",
-        "  MOHAMMED   AADIL   KHURSHID  ",
+        "Daniel James Anderson",
+        "  DANIEL   JAMES   ANDERSON  ",
     )
 
 
 def test_field_accuracy():
     ground_truth = {
-        "owner_name": "Mohammed Aadil Khurshid",
+        "owner_name": "Daniel James Anderson",
         "survey_number": "128/3",
     }
 
     prediction = {
-        "owner_name": "Mohammed Aadil Khurshid",
+        "owner_name": "Daniel James Anderson",
         "survey_number": "128/8",
     }
 

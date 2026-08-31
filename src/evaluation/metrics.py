@@ -1,25 +1,19 @@
-import re
-from jiwer import wer, cer
+from src.evaluation.normalization import (
+    normalize_for_match,
+    normalize_text,
+)
+
+from jiwer import cer, wer
 
 
-def normalize_text(text: str) -> str:
-    """Normalize OCR and ground-truth text before comparison."""
+__all__ = [
+    "normalize_text",
+    "calculate_cer",
+    "calculate_wer",
+    "exact_match",
+    "calculate_field_accuracy",
+]
 
-    text = text.lower()
-
-    # Normalize common dash variants and OCR encoding artifacts.
-    text = text.replace("—", "-")
-    text = text.replace("–", "-")
-    text = text.replace("â€”", "-")
-    text = text.replace("â€“", "-")
-
-    # Collapse repeated dash separators introduced by OCR.
-    text = re.sub(r"-{2,}", "-", text)
-
-    text = re.sub(r"\s+", " ", text)
-    text = text.strip()
-
-    return text
 
 def calculate_cer(reference: str, hypothesis: str) -> float:
     """Calculate Character Error Rate."""
@@ -40,9 +34,15 @@ def calculate_wer(reference: str, hypothesis: str) -> float:
 
 
 def exact_match(reference: str, hypothesis: str) -> bool:
-    """Check whether two field values match after normalization."""
+    """Check whether two field values match after normalization.
 
-    return normalize_text(reference) == normalize_text(hypothesis)
+    Uses the dash-space-aware normalizer so that
+    ``REG - 2026 - 00128`` and ``REG-2026-00128`` compare as
+    equal; CER/WER keep the spacing-preserving
+    ``normalize_text``.
+    """
+
+    return normalize_for_match(reference) == normalize_for_match(hypothesis)
 
 
 def calculate_field_accuracy(

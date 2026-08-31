@@ -44,14 +44,12 @@ def main():
 
     if not documents_directory.exists():
         raise FileNotFoundError(
-            f"Documents directory not found: "
-            f"{documents_directory}"
+            f"Documents directory not found: {documents_directory}"
         )
 
     if not ground_truth_directory.exists():
         raise FileNotFoundError(
-            f"Ground-truth directory not found: "
-            f"{ground_truth_directory}"
+            f"Ground-truth directory not found: {ground_truth_directory}"
         )
 
     output_path.parent.mkdir(
@@ -83,9 +81,7 @@ def main():
         str(output_path),
     )
 
-    robustness_report_generator = (
-        RobustnessReportGenerator()
-    )
+    robustness_report_generator = RobustnessReportGenerator()
 
     robustness_report_path = (
         output_path.parent / "robustness_report.md"
@@ -103,16 +99,54 @@ def main():
     print("EVALUATION SUMMARY")
     print("=" * 70)
 
-    print(f"Documents evaluated : {summary['total_documents']}")
-    print(f"PASS                : {summary['passed']}")
-    print(f"REVIEW              : {summary['review']}")
-    print(f"FAIL                : {summary['failed']}")
-    print(f"Average CER         : {summary['average_cer']:.4f}")
-    print(f"Average WER         : {summary['average_wer']:.4f}")
+    print(
+        f"Documents evaluated : "
+        f"{summary['total_documents']}"
+    )
+
+    print(
+        f"PASS                : "
+        f"{summary['passed']}"
+    )
+
+    print(
+        f"REVIEW              : "
+        f"{summary['review']}"
+    )
+
+    print(
+        f"FAIL                : "
+        f"{summary['failed']}"
+    )
+
+    if summary["errors"]:
+        print(
+            f"ERROR               : "
+            f"{summary['errors']}"
+        )
+
+        for result in results:
+            if result.get("status") == "ERROR":
+                print(
+                    f"  - {result['document']}: "
+                    f"{result['error']}"
+                )
+
+    print(
+        f"Average CER         : "
+        f"{summary['average_cer']:.4f}"
+    )
+
+    print(
+        f"Average WER         : "
+        f"{summary['average_wer']:.4f}"
+    )
+
     print(
         f"Average field accuracy: "
         f"{summary['average_field_accuracy']:.2%}"
     )
+
     print()
     print(f"Report written to: {output_path}")
     print(

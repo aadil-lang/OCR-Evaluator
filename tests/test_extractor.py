@@ -4,8 +4,8 @@ from src.evaluation.extractor import extract_fields
 OCR_TEXT = """
 SALE DEED
 
-Owner Name: Mohammed Aadil Khurshid
-Father Name: Mohammed Khurshid
+Owner Name: Daniel James Anderson
+Father Name: James Anderson
 Survey Number: 128/3
 Area: 0.2450 Hectare
 Village: Rampur
@@ -18,8 +18,8 @@ Registration Number: REG-2026-00128
 def test_extracts_all_fields():
     fields = extract_fields(OCR_TEXT)
 
-    assert fields["owner_name"] == "Mohammed Aadil Khurshid"
-    assert fields["father_name"] == "Mohammed Khurshid"
+    assert fields["owner_name"] == "Daniel James Anderson"
+    assert fields["father_name"] == "James Anderson"
     assert fields["survey_number"] == "128/3"
     assert fields["area"] == "0.2450 Hectare"
     assert fields["village"] == "Rampur"
@@ -32,13 +32,13 @@ def test_missing_field_returns_empty_string():
     text = """
     SALE DEED
 
-    Owner Name: Mohammed Aadil Khurshid
+    Owner Name: Daniel James Anderson
     Survey Number: 128/3
     """
 
     fields = extract_fields(text)
 
-    assert fields["owner_name"] == "Mohammed Aadil Khurshid"
+    assert fields["owner_name"] == "Daniel James Anderson"
     assert fields["survey_number"] == "128/3"
     assert fields["father_name"] == ""
     assert fields["area"] == ""
@@ -50,23 +50,23 @@ def test_missing_field_returns_empty_string():
 
 def test_extraction_is_case_insensitive():
     text = """
-    owner name: Mohammed Aadil Khurshid
+    owner name: Daniel James Anderson
     SURVEY NUMBER: 128/3
     """
 
     fields = extract_fields(text)
 
-    assert fields["owner_name"] == "Mohammed Aadil Khurshid"
+    assert fields["owner_name"] == "Daniel James Anderson"
     assert fields["survey_number"] == "128/3"
 
 
 def test_extra_whitespace_is_trimmed():
     text = """
-    Owner Name:    Mohammed Aadil Khurshid
+    Owner Name:    Daniel James Anderson
     Survey Number:     128/3
     """
 
     fields = extract_fields(text)
 
-    assert fields["owner_name"] == "Mohammed Aadil Khurshid"
+    assert fields["owner_name"] == "Daniel James Anderson"
     assert fields["survey_number"] == "128/3"

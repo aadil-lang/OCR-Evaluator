@@ -1,25 +1,17 @@
-﻿import re
+import re
 from difflib import SequenceMatcher
 
-
-FIELD_LABELS = {
-    "owner_name": "Owner Name",
-    "father_name": "Father Name",
-    "survey_number": "Survey Number",
-    "area": "Area",
-    "village": "Village",
-    "tehsil": "Tehsil",
-    "district": "District",
-    "registration_number": "Registration Number",
-}
+from src.evaluation.fields import anchored_field_pattern
+from src.evaluation.normalization import normalize_text
 
 
-def normalize_text(text: str) -> str:
-    """Normalize text for comparison."""
-
-    text = text.lower()
-    text = re.sub(r"\s+", " ", text)
-    return text.strip()
+__all__ = [
+    "normalize_text",
+    "check_value_supported",
+    "extract_source_field_value",
+    "check_field_supported",
+    "detect_unsupported_fields",
+]
 
 
 def check_value_supported(
@@ -56,18 +48,16 @@ def check_value_supported(
     }
 
 
-def _extract_source_field_value(
+def extract_source_field_value(
     field: str,
     source_text: str,
 ) -> str:
     """Extract the value associated with a known field label."""
 
-    label = FIELD_LABELS.get(field)
+    pattern = anchored_field_pattern(field)
 
-    if not label:
+    if not pattern:
         return ""
-
-    pattern = rf"^\s*{re.escape(label)}\s*:\s*(.+?)\s*$"
 
     match = re.search(
         pattern,
@@ -89,7 +79,7 @@ def check_field_supported(
 ) -> dict:
     """Check whether a field value is supported by its own source field."""
 
-    source_value = _extract_source_field_value(
+    source_value = extract_source_field_value(
         field,
         source_text,
     )

@@ -4,8 +4,8 @@ from src.evaluation.critical_fields import (
 
 
 GROUND_TRUTH = {
-    "owner_name": "Mohammed Aadil Khurshid",
-    "father_name": "Mohammed Khurshid",
+    "owner_name": "Daniel James Anderson",
+    "father_name": "James Anderson",
     "survey_number": "128/3",
     "area": "0.2450 Hectare",
     "village": "Rampur",

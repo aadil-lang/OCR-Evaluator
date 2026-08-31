@@ -7,8 +7,8 @@ from src.evaluation.faithfulness import (
 SOURCE_TEXT = """
 SALE DEED
 
-Owner Name: Mohammed Aadil Khurshid
-Father Name: Mohammed Khurshid
+Owner Name: Daniel James Anderson
+Father Name: James Anderson
 Survey Number: 128/3
 Area: 0.2450 Hectare
 Village: Rampur
@@ -20,7 +20,7 @@ Registration Number: REG-2026-00128
 
 def test_exact_value_is_supported():
     result = check_value_supported(
-        "Mohammed Aadil Khurshid",
+        "Daniel James Anderson",
         SOURCE_TEXT,
     )
 
@@ -49,7 +49,7 @@ def test_empty_value_is_not_supported():
 
 def test_detect_unsupported_fields():
     fields = {
-        "owner_name": "Mohammed Aadil Khurshid",
+        "owner_name": "Daniel James Anderson",
         "survey_number": "128/3",
         "property_type": "Residential",
     }

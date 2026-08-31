@@ -1,9 +1,9 @@
 {
     "document": "test_document.png",
-    "transcription": "SALE DEED\n\nOwner Name: Mohammed Aadil Khurshid\nFather Name: Mohammed Khurshid\nSurvey Number: 128/3\nArea: 0.2450 Hectare\nVillage: Rampur\nTehsil: Sadar\nDistrict: Varanasi\nRegistration Number: REG-2026-00128",
+    "transcription": "SALE DEED\n\nOwner Name: Daniel James Anderson\nFather Name: James Anderson\nSurvey Number: 128/3\nArea: 0.2450 Hectare\nVillage: Rampur\nTehsil: Sadar\nDistrict: Varanasi\nRegistration Number: REG-2026-00128",
     "fields": {
-        "owner_name": "Mohammed Aadil Khurshid",
-        "father_name": "Mohammed Khurshid",
+        "owner_name": "Daniel James Anderson",
+        "father_name": "James Anderson",
         "survey_number": "128/3",
         "area": "0.2450 Hectare",
         "village": "Rampur",

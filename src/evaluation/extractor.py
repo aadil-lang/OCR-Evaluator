@@ -1,16 +1,18 @@
 import re
 
+from src.evaluation.fields import FIELD_PATTERNS
+from src.evaluation.normalization import clean_value
 
-FIELD_PATTERNS = {
-    "owner_name": r"Owner Name\s*:\s*(.+)",
-    "father_name": r"Father Name\s*:\s*(.+)",
-    "survey_number": r"Survey Number\s*:\s*(.+)",
-    "area": r"Area\s*:\s*(.+)",
-    "village": r"Village\s*:\s*(.+)",
-    "tehsil": r"Tehsil\s*:\s*(.+)",
-    "district": r"District\s*:\s*(.+)",
-    "registration_number": r"Registration Number\s*:\s*(.+)",
-}
+
+__all__ = [
+    "FIELD_PATTERNS",
+    "clean_ocr_value",
+    "extract_fields",
+]
+
+
+# Kept for backward compatibility with existing callers.
+clean_ocr_value = clean_value
 
 
 def extract_fields(text: str) -> dict:
@@ -22,7 +24,8 @@ def extract_fields(text: str) -> dict:
         match = re.search(pattern, text, re.IGNORECASE)
 
         if match:
-            fields[field] = match.group(1).strip()
+            value = match.group(1).strip()
+            fields[field] = clean_ocr_value(value)
         else:
             fields[field] = ""
 
