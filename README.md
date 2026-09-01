@@ -1,6 +1,6 @@
 # OCR Evaluation & Robustness Testing Platform
 
-> An engineering-focused OCR evaluation system for measuring document extraction accuracy, confidence, critical-field correctness, and robustness under real-world image degradation.
+> An engineering-focused document intelligence platform for evaluating OCR accuracy, field-level correctness, confidence, and robustness before extracted data is used downstream.
 
 [![Tests](https://img.shields.io/badge/tests-134%20passed-brightgreen)](#testing)
 [![Python](https://img.shields.io/badge/python-3.12-blue)](#tech-stack)
@@ -33,6 +33,29 @@ The goal is to answer:
 > **"Can this OCR result be trusted?"**
 
 ---
+
+# Real-World Applications
+
+This evaluation framework is designed for document-processing systems where OCR errors can have different levels of business impact.
+
+Potential applications include:
+
+- **Land and property records** — validating survey numbers, registration numbers, ownership details, and area measurements.
+- **Legal document processing** — identifying extraction mismatches in contracts, deeds, and official records.
+- **Banking and financial documents** — validating account numbers, amounts, dates, and customer information.
+- **Insurance documents** — evaluating extraction from claims, forms, and supporting documents.
+- **Government digitization** — assessing OCR quality when converting scanned records into structured digital data.
+- **Enterprise document automation** — determining whether extracted information can safely move to downstream systems or should be sent for human review.
+
+The key production use case is not simply:
+
+> "Did OCR extract the document?"
+
+It is:
+
+> **"Can this extracted information be trusted for the next step?"**
+
+For example, an OCR system may correctly extract 99% of a document while changing a single critical value such as a survey number, policy number, account number, or registration number. A reliability layer should detect that distinction and route the document to `PASS`, `REVIEW`, or `FAIL`.
 
 ## Why this project?
 
